@@ -1,6 +1,6 @@
 resource "yandex_vpc_security_group" "internal" {
   name       = "internal-rules"
-  network_id = yandex_vpc_network.dipnet.id
+  network_id = yandex_vpc_network.diplomnet.id
 
   ingress {
     protocol       = "ANY"
@@ -17,7 +17,7 @@ resource "yandex_vpc_security_group" "internal" {
 
 resource "yandex_vpc_security_group" "public-bastion" {
   name       = "public-bastion-rules"
-  network_id = yandex_vpc_network.dipnet.id
+  network_id = yandex_vpc_network.diplomnet.id
 
   ingress {
     protocol       = "TCP"
@@ -41,7 +41,7 @@ resource "yandex_vpc_security_group" "public-bastion" {
 
 resource "yandex_vpc_security_group" "public-zabbix" {
   name       = "public-zabbix-rules"
-  network_id = yandex_vpc_network.dipnet.id
+  network_id = yandex_vpc_network.diplomnet.id
 
   ingress {
     protocol       = "TCP"
@@ -72,7 +72,7 @@ resource "yandex_vpc_security_group" "public-zabbix" {
 
 resource "yandex_vpc_security_group" "public-kibana" {
   name       = "public-kibana-rules"
-  network_id = yandex_vpc_network.dipnet.id
+  network_id = yandex_vpc_network.diplomnet.id
 
   ingress {
     protocol       = "TCP"
@@ -96,7 +96,7 @@ resource "yandex_vpc_security_group" "public-kibana" {
 
 resource "yandex_vpc_security_group" "public-load-balancer" {
   name       = "public-load-balancer-rules"
-  network_id = yandex_vpc_network.dipnet.id
+  network_id = yandex_vpc_network.diplomnet.id
 
   ingress {
     protocol          = "ANY"

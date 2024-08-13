@@ -25,7 +25,14 @@ resource "yandex_compute_disk" "disk-bastion" {
 
 }
 
+resource "yandex_compute_disk" "disk-zabbix" {
+  name     = "disk-zabbix"
+  type     = "network-hdd"
+  zone     = "ru-central1-b"
+  image_id = "fd88rqql4soidsdqf98a"
+  size     = 8
 
+}
 
 resource "yandex_compute_disk" "disk-kibana" {
   name     = "disk-kibana"
