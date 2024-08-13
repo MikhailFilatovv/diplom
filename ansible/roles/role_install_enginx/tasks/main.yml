@@ -1,0 +1,16 @@
+---
+- name: Установка Nginx
+  apt:
+    name: nginx
+    state: latest
+    update_cache: yes
+
+- name: Templates | Template HTML-page
+  template:
+    src: "index.html.j2"
+    dest: "{{ html_page_folder }}/index.html"
+    owner: "{{ mginx.user.name }}"
+    group: "{{ nginx.user.group }}"
+    mode: 0644
+  notify:
+    - Restart Nginx
