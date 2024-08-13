@@ -1,2 +1,11 @@
 ---
 # defaults file for role_install_elastic
+es_config_dir: "/opt/elasticsearch"
+es_clustername: "diplom_logs"
+es_data_path: "/opt/elasticsearch/data"
+es_log_path: "/opt/elasticsearch/logs"
+es_network_host: "127.0.0.1"
+es_http_listen_address: "0.0.0.0"
+es_http_listen_port: "9200"
+es_discovery_seed_hosts: '["127.0.0.1", "[::1]"]'
+es_descovery_type: single-node

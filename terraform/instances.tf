@@ -79,8 +79,8 @@ resource "yandex_compute_instance" "web-2" {
 ######################
 
 resource "yandex_compute_instance" "bastion" {
-  name                      = "dpl-s01bst"
-  hostname                  = "bastion"
+  name                      = "bastiont"
+  hostname                  = "dpl-s01bst"
   zone                      = "ru-central1-b"
   allow_stopping_for_update = true
   platform_id               = "standard-v3"
