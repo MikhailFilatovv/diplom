@@ -1,2 +1,3 @@
 ---
-# defaults file for role_install_kibana
+kibana_es_http_host: "10.0.3.4"
+filebeat_kibana_port: "9200"

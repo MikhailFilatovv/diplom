@@ -1,2 +1,7 @@
 ---
-# handlers file for role_install_kibana
+- name: Restart Kibana
+  systemd:
+    name: kibana
+    daemon-reload: true
+    enabled: true
+    state: restarted

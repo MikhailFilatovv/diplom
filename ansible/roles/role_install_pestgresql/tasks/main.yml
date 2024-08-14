@@ -1,0 +1,56 @@
+---
+- name: Install PostgreSQL Python libraries
+  apt:
+    name: "{{ postgresql_python_library }}"
+    state: present
+
+- name: Install PostgreSQL
+  ansible.builtin.package:
+    name:
+      - "postgresql{{ postgresql_version }}"
+      - "postgresql{{ postgresql_version }}-server"
+      - "postgresql{{ postgresql_version }}-contrib"
+    state: present
+  become: true
+
+- name: Ensure data directory exists
+  file:
+    path: "{{ postgresql_data_dir }}"
+    state: directory
+    owner: "{{ postgresql_user }}"
+    group: "{{ postgresql_group }}"
+    mode: '0700'
+  become: true
+
+- name: Update PostgreSQL service file for new data directory
+  lineinfile:
+    path: "{{ postgresql_service_file }}"
+    regexp: '^Environment=PGDATA='
+    line: "Environment=PGDATA={{ postgresql_data_dir }}"
+    state: present
+  become: true
+  notify: Restart postgresql
+  register: postgresql_service_file
+
+- name: Update PostgreSQL service file for new data directory | Reload daemon
+  service:
+    daemon_reload: true
+  when: postgresql_service_file.changed # noqa: no-handler
+
+- name: "Allow all users connect to all databases from all sources"
+  postgresql_pg_hba:
+    dest: "{{ postgresql_pg_hba_conf }}"
+    contype: host
+    users: all
+    databases: all
+    method: "{{ postgresql_password_encryption }}"
+    source: "{{ item }}"
+    keep_comments_at_rules: true
+  with_items:
+  - "::/0"
+  - "0.0.0.0/0"
+  become: true
+  become_user: "{{ postgresql_user }}"
+  vars:
+    ansible_ssh_pipelining: true
+  notify: Restart postgresql

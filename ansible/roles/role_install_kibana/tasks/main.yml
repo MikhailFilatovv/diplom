@@ -1,2 +1,12 @@
 ---
-# tasks file for role_install_kibana
+- name: Install Kibana
+  apt:
+    deb: "https://mirror.yandex.ru/mirrors/elastic/7/pool/main/k/kibana/kibana-7.15.1-amd64.deb"
+
+- name: Template Kibana
+  template:
+    src: /home/user/ansible/kibana.j2
+    dest: /etc/kibana/kibana.yml
+    mode: 0644
+  notify:
+    - Restart Kibana

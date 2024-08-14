@@ -1,9 +1,9 @@
 ---
 # defaults file for role_install_elastic
-es_config_dir: "/opt/elasticsearch"
+es_config_dir: "/etc/elasticsearch"
 es_clustername: "diplom_logs"
-es_data_path: "/opt/elasticsearch/data"
-es_log_path: "/opt/elasticsearch/logs"
+es_data_path: "/var/lib/elasticsearch"
+es_log_path: "/var/log/elasticsearch"
 es_network_host: "127.0.0.1"
 es_http_listen_address: "0.0.0.0"
 es_http_listen_port: "9200"

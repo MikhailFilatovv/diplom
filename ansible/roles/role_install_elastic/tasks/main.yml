@@ -9,3 +9,5 @@
     src: "elastic_conf.yml"
     dest: "{{ es_config_dir }}/elasticsearch.yml"
     mode: 0644
+  notify:
+    - Restart Elasticsearch
