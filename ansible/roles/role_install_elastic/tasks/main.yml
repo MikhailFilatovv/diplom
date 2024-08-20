@@ -2,7 +2,7 @@
 # tasks file for role_install_elastic
 - name: Elasticsearch install deb from yandex mirror
   apt:
-    deb: "https://mirror.yandex.ru/mirrors/elastic/{{ elk_major_version }}/pool/main/e/elasticsearch/elasticsearch-{{ es_version }}-amd64.deb"
+    deb: "https://mirror.yandex.ru/mirrors/elastic/7/pool/main/e/elasticsearch/elasticsearch-{{ es_version }}.deb"
 
 - name: Template elasticsearch config
   template:
