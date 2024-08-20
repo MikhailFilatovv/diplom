@@ -1,3 +1,4 @@
 ---
 kibana_es_http_host: "10.0.3.4"
 filebeat_kibana_port: "9200"
+kibana_version: ""

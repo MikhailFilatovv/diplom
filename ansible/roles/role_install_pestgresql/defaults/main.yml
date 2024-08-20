@@ -7,13 +7,7 @@ postgresql_python_library: python3-psycopg2
 postgresql_locales:
   - 'en_US.UTF-8'
 
-postgresql_packages:
-  - postgresql
-  - postgresql-contrib
-  - libpq-dev
-
 postgresql_version: 16
 postgresql_pg_hba_conf: "/var/lib/pgsql/{{ postgresql_version }}/data/pg_hba.conf"
 postgresql_password_encryption: scram-sha-256
 postgresql_service_name: "postgresql-{{ postgresql_version }}"
-postgresql_service_file: "/usr/lib/systemd/system/{{ postgresql_service_name }}.service"

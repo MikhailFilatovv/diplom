@@ -1,0 +1,25 @@
+---
+- name: Установка Nginx
+  apt:
+    name: nginx-{{ nginx_version }}
+    state: present
+    update_cache: true
+  when: ansible_host in groups['web', 'zabbix']
+
+- name: Templates | Template HTML-page
+  template:
+    src: "index.html.j2"
+    dest: "{{ nginx_root_dir }}/index.html"
+    mode: 0644
+  notify:
+    - Restart Nginx
+  when: ansible_host in groups['web']
+
+- name: Templates | Template nginx config
+  template:
+    src: "nginx.conf.j2"
+    dest: "{{ nginx_conf_dir }}/nginx.conf"
+    mode: 0644
+  notify:
+    - Restart Nginx
+  when: ansible_host in groups['web']

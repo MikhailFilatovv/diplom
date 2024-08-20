@@ -2,7 +2,7 @@
 # tasks file for role_install_filebit
 - name: Install filebeat
   apt:
-    deb: "https://mirror.yandex.ru/mirrors/elastic/7/pool/main/f/filebeat/filebeat-7.15.1-amd64.deb"
+    deb: "https://mirror.yandex.ru/mirrors/elastic/{{ elk_major_version }}/pool/main/f/filebeat/filebeat-{{ elk_version }}-amd64.deb"
 
 - name: Копируем конфиг filebeat
   template:

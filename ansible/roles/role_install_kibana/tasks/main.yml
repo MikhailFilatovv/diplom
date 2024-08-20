@@ -1,7 +1,7 @@
 ---
-- name: Install Kibana
+- name: Install kibana deb from a yandex mirror
   apt:
-    deb: "https://mirror.yandex.ru/mirrors/elastic/7/pool/main/k/kibana/kibana-7.15.1-amd64.deb"
+    deb: "https://mirror.yandex.ru/mirrors/elastic/{{ elk_major_version }}/pool/main/k/kibana/kibana-{{ elk_version }}-amd64.deb"
 
 - name: Template Kibana
   template:

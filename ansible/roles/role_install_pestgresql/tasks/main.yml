@@ -5,37 +5,13 @@
     state: present
 
 - name: Install PostgreSQL
-  ansible.builtin.package:
+  package:
     name:
       - "postgresql{{ postgresql_version }}"
       - "postgresql{{ postgresql_version }}-server"
       - "postgresql{{ postgresql_version }}-contrib"
     state: present
   become: true
-
-- name: Ensure data directory exists
-  file:
-    path: "{{ postgresql_data_dir }}"
-    state: directory
-    owner: "{{ postgresql_user }}"
-    group: "{{ postgresql_group }}"
-    mode: '0700'
-  become: true
-
-- name: Update PostgreSQL service file for new data directory
-  lineinfile:
-    path: "{{ postgresql_service_file }}"
-    regexp: '^Environment=PGDATA='
-    line: "Environment=PGDATA={{ postgresql_data_dir }}"
-    state: present
-  become: true
-  notify: Restart postgresql
-  register: postgresql_service_file
-
-- name: Update PostgreSQL service file for new data directory | Reload daemon
-  service:
-    daemon_reload: true
-  when: postgresql_service_file.changed # noqa: no-handler
 
 - name: "Allow all users connect to all databases from all sources"
   postgresql_pg_hba:
@@ -54,3 +30,19 @@
   vars:
     ansible_ssh_pipelining: true
   notify: Restart postgresql
+
+- name: Create rails user, set MD5-hashed password, grant privs
+  postgresql_user:
+    name: zabbix
+    password: "{{ vault_zabbix_password }}"
+    role_attr_flags: CREATEDB,NOSUPERUSER
+
+- name: Run Zabbix SQL-script | Import schema and data to PostgreSQL
+  shell:
+    zcat /usr/share/zabbix-sql-scripts/postgresql/server.sql.gz | sudo -u zabbix psql zabbix
+
+- name: Настройка DBPassword в конфигурационном файле Zabbix
+  lineinfile:
+    path: /etc/zabbix/zabbix_server.conf
+    regexp: '^DBPassword='
+    line: 'DBPassword=zabbix'
