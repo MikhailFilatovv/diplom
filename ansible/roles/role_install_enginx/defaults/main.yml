@@ -1,5 +1,0 @@
----
-# defaults file for role_install_enginx
-html_page_folder:
-nginx_user_name:
-nginx_user_group:

@@ -26,4 +26,13 @@ setup.kibana:
 #-------------------------- Elasticsearch output ------------------------------
 
 output.elasticsearch:
-  hosts: ["{{ filebeat_es_host }}:{{ filebeat_es_port }}"]
+  hosts: ["http://{{ filebeat_es_host }}:{{ filebeat_es_port }}"]
+
+#------------------------- fix --------------------------------------------
+
+seccomp:
+  default_action: allow
+  syscalls:
+  - action: allow
+    names:
+    - rseq

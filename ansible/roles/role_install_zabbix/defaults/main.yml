@@ -1,2 +1,5 @@
 ---
 # defaults file for role_install_zabbix
+zabbix_listen_port: "8080"
+zabbix_server: "10.0.4.5"
+zabbix_conf_dir: "/etc/zabbix/"

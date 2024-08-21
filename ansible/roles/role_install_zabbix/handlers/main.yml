@@ -1,2 +1,19 @@
 ---
 # handlers file for role_install_zabbix
+- name: Restart Zabbix
+  systemd:
+    name: "{{ item }}"
+    daemon-reload: true
+    enabled: true
+    state: restarted
+  with_items:
+    - zabbix-server
+    - nginx
+    - php8.2-fpm
+
+- name: Restart Zabbix-agent
+  systemd:
+    name: "zabbix-agent"
+    daemon-reload: true
+    enabled: true
+    state: restarted

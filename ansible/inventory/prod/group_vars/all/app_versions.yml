@@ -1,4 +1,0 @@
-elk_major_version: 7
-elk_version: "{{ elk_major_version }}.15.1"
-nginx_version: ""
-postgresql_version: 16

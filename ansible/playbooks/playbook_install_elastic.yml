@@ -1,0 +1,8 @@
+---
+- name: Install nginx
+  hosts: all
+  become: true
+  roles:
+  - roles/role_install_elastic
+  - roles/role_install_kibana
+  - roles/role_install_filebit

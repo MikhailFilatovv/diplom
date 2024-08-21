@@ -10,3 +10,5 @@ es_http_listen_port: "9200"
 es_discovery_seed_hosts: '["127.0.0.1", "[::1]"]'
 es_descovery_type: single-node
 es_version: "7.15.1-amd64"
+elk_major_version:
+elk_version:

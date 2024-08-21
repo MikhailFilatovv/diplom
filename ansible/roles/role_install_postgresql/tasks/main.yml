@@ -1,15 +1,19 @@
 ---
-- name: Install PostgreSQL Python libraries
+- name: update Python and install PostgreSQL Python libraries
   apt:
-    name: "{{ postgresql_python_library }}"
+    name:
+      - python3-pexpect
+      - python3-pip
+      - python3-dev
+      - python3-venv
+      - python3-psycopg2
     state: present
 
 - name: Install PostgreSQL
-  package:
+  apt:
     name:
-      - "postgresql{{ postgresql_version }}"
-      - "postgresql{{ postgresql_version }}-server"
-      - "postgresql{{ postgresql_version }}-contrib"
+      - "postgresql"
+      - "postgresql-contrib"
     state: present
   become: true
 
@@ -36,13 +40,20 @@
     name: zabbix
     password: "{{ vault_zabbix_password }}"
     role_attr_flags: CREATEDB,NOSUPERUSER
+  vars:
+    ansible_ssh_pipelining: true
+  become: true
+  become_user: "{{ postgresql_user }}"
 
-- name: Run Zabbix SQL-script | Import schema and data to PostgreSQL
-  shell:
-    zcat /usr/share/zabbix-sql-scripts/postgresql/server.sql.gz | sudo -u zabbix psql zabbix
-
-- name: Настройка DBPassword в конфигурационном файле Zabbix
-  lineinfile:
-    path: /etc/zabbix/zabbix_server.conf
-    regexp: '^DBPassword='
-    line: 'DBPassword=zabbix'
+- name: Ensure PostgreSQL databases are present
+  community.postgresql.postgresql_db:
+    name: "zabbix"
+    lc_collate: "en_US.UTF-8"
+    lc_ctype: "en_US.UTF-8"
+    encoding: "UTF-8"
+    owner: "zabbix"
+    state: "present"
+  become: true
+  become_user: "{{ postgresql_user }}"
+  vars:
+    ansible_ssh_pipelining: true

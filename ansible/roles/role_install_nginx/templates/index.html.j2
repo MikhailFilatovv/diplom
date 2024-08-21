@@ -1,25 +1,26 @@
 <!DOCTYPE html>
 <html lang="ru">
-<head>
-    <meta name="viewport" content="width=device-width,minimum-scale=1,maximum-scale=10">
-    <title>"Дипломная работа. Михаил Филатов"</title>
-    <link rel="stylesheet" href="css/style.css">
-</head>
-<body>
-    <div class="content-wrapper">
-        <header class="header">
-            <p style="font-size: 30px; margin: 0; padding: 10px 1em;">Дипломная работа. Михаил Филатов</p>
-        </header>
-
-        <div class="container clearfix">
-            <main class="content">
-                <p style="text-align: center; font-size: 30px; margin: 0; padding: 1.5em 0;">Если вы видите эту страницу, то у меня все получилось.</p>
-            </main>
-        </div>
-
-        <footer class="footer">
-            <p style="font-size: 30px; margin: 0; padding: 10px 1em;">Кстати, эта страничка с сервера {{ inventory_hostname }}</p>
-        </footer>
-    </div>
-</body>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Диплломная работа</title>
+    <link rel="stylesheet" href="./styles/style.css">
+  </head>
+  <body>
+    <header>
+      <h1>Дипломная работа</h1>
+      <p>Выполнил Филатов Михаил.</p>
+    </header>
+    <main>
+      <article>
+        <section>
+          <h2>Ссылка на GitHub</h2>
+          <a href="https://github.com/MikhailFilatovv/diplom">Исходные коды дипломной работы</a>
+        </section>
+      </article>
+    </main>
+    <footer>
+      <p>Страница расположена на {{ ansible_host }}</p>
+    </footer>
+  </body>
 </html>

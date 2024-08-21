@@ -2,12 +2,14 @@
 # tasks file for role_install_filebit
 - name: Install filebeat
   apt:
-    deb: "https://mirror.yandex.ru/mirrors/elastic/{{ elk_major_version }}/pool/main/f/filebeat/filebeat-{{ elk_version }}-amd64.deb"
+    deb: "https://mirror.yandex.ru/mirrors/elastic/{{ elk_major_version }}/pool/main/f/filebeat/filebeat-{{ elk_version }}.deb"
+  when: ansible_host in groups['web']
 
-- name: Копируем конфиг filebeat
+- name: Template filebeat config
   template:
-    src: "filebeat.j2"
+    src: "filebeat.yml.j2"
     dest: /etc/filebeat/filebeat.yml
     mode: 0644
   notify:
     - Restart Filebeat
+  when: ansible_host in groups['web']

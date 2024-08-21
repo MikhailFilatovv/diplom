@@ -1,10 +1,10 @@
 ---
 - name: Установка Nginx
   apt:
-    name: nginx-{{ nginx_version }}
+    name: nginx
     state: present
     update_cache: true
-  when: ansible_host in groups['web', 'zabbix']
+  when: ansible_host in groups['nginx']
 
 - name: Templates | Template HTML-page
   template:

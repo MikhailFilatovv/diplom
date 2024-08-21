@@ -1,5 +1,16 @@
 [web]
+dpl-s01web.ru-central1.internal
+dpl-s02web.ru-central1.internal
 
 [elastic]
+dpl-s01elk.ru-central1.internal
+
+[kibana]
+dpl-s02elk.ru-central1.internal
 
 [zabbix]
+dpl-s01zbx.ru-central1.internal
+
+[nginx:children]
+web
+zabbix

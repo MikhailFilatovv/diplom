@@ -54,7 +54,7 @@ resource "yandex_vpc_security_group" "public-zabbix" {
     protocol       = "TCP"
     description    = "allow zabbix connections from internet"
     v4_cidr_blocks = ["0.0.0.0/0"]
-    port           = 80
+    port           = 8080
   }
 
   ingress {

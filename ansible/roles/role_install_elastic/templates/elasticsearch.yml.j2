@@ -36,8 +36,8 @@ network.host: {{ es_network_host }}
 # By default Elasticsearch listens for HTTP traffic on the first free port it
 # finds starting at 9200. Set a specific HTTP port here:
 #
-http.host: {{ es_http_address }}
-http.port: {{ es_http_port }}
+http.host: {{ es_http_listen_address }}
+http.port: {{ es_http_listen_port }}
 #
 # For more information, consult the network module documentation.
 #

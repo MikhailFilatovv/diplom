@@ -1,12 +1,14 @@
 ---
 - name: Install kibana deb from a yandex mirror
   apt:
-    deb: "https://mirror.yandex.ru/mirrors/elastic/{{ elk_major_version }}/pool/main/k/kibana/kibana-{{ elk_version }}-amd64.deb"
+    deb: "https://mirror.yandex.ru/mirrors/elastic/{{ elk_major_version }}/pool/main/k/kibana/kibana-{{ elk_version }}.deb"
+  when: ansible_host in groups['kibana']
 
-- name: Template Kibana
+- name: Template Kibana config
   template:
-    src: /home/user/ansible/kibana.j2
+    src: kibana.yml.j2
     dest: /etc/kibana/kibana.yml
     mode: 0644
   notify:
     - Restart Kibana
+  when: ansible_host in groups['kibana']

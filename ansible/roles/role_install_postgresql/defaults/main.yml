@@ -1,0 +1,11 @@
+---
+postgresql_user: postgres
+postgresql_group: postgres
+
+postgresql_locales:
+  - 'en_US.UTF-8'
+
+postgresql_version: 15
+postgresql_pg_hba_conf: "/etc/postgresql/{{ postgresql_version }}/main/pg_hba.conf"
+postgresql_password_encryption: scram-sha-256
+postgresql_service_name: "postgresql"

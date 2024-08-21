@@ -2,7 +2,8 @@
 # tasks file for role_install_elastic
 - name: Elasticsearch install deb from yandex mirror
   apt:
-    deb: "https://mirror.yandex.ru/mirrors/elastic/7/pool/main/e/elasticsearch/elasticsearch-{{ es_version }}.deb"
+    deb: "https://mirror.yandex.ru/mirrors/elastic/{{ elk_major_version }}/pool/main/e/elasticsearch/elasticsearch-{{ elk_version }}.deb"
+  when: ansible_host in groups['elastic']
 
 - name: Template elasticsearch config
   template:
@@ -11,3 +12,4 @@
     mode: 0644
   notify:
     - Restart Elasticsearch
+  when: ansible_host in groups['elastic']
