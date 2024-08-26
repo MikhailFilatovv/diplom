@@ -1,5 +1,5 @@
 ---
-- name: Install nginx
+- name: Install elk stack
   hosts: all
   become: true
   roles:

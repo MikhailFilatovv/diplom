@@ -1,5 +1,5 @@
 ---
-- name: Install nginx
+- name: Install Postgresql
   hosts: zabbix
   become: true
   roles:
