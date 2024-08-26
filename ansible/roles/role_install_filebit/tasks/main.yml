@@ -4,6 +4,8 @@
   apt:
     deb: "https://mirror.yandex.ru/mirrors/elastic/{{ elk_major_version }}/pool/main/f/filebeat/filebeat-{{ elk_version }}.deb"
   when: ansible_host in groups['web']
+  vars:
+    tag: install
 
 - name: Template filebeat config
   template:
@@ -13,3 +15,5 @@
   notify:
     - Restart Filebeat
   when: ansible_host in groups['web']
+  vars:
+    tag: configure

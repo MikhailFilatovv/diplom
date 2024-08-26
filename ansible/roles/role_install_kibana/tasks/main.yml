@@ -3,6 +3,8 @@
   apt:
     deb: "https://mirror.yandex.ru/mirrors/elastic/{{ elk_major_version }}/pool/main/k/kibana/kibana-{{ elk_version }}.deb"
   when: ansible_host in groups['kibana']
+  vars:
+    tag: install
 
 - name: Template Kibana config
   template:
@@ -12,3 +14,5 @@
   notify:
     - Restart Kibana
   when: ansible_host in groups['kibana']
+  vars:
+    tag: configure

@@ -27,6 +27,8 @@ setup.kibana:
 
 output.elasticsearch:
   hosts: ["http://{{ filebeat_es_host }}:{{ filebeat_es_port }}"]
+  username: "{{ filebeat_user }}"
+  password: "{{ vault_filebeat_password }}"
 
 #------------------------- fix --------------------------------------------
 
@@ -36,3 +38,5 @@ seccomp:
   - action: allow
     names:
     - rseq
+
+setup.ilm.check_exists: false

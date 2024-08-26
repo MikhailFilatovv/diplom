@@ -4,10 +4,10 @@
   become: true
   roles:
   - role: roles/role_install_elastic
-    when: tag == "install"
+    when: tag == "configure"
 
   - role: roles/role_install_kibana
-    when: tag == "install"
+    when: tag == "configure"
 
   - role: roles/role_install_filebit
-    when: tag == "install"
+    when: tag == "configure"

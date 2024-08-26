@@ -4,6 +4,8 @@
   apt:
     deb: "https://mirror.yandex.ru/mirrors/elastic/{{ elk_major_version }}/pool/main/e/elasticsearch/elasticsearch-{{ elk_version }}.deb"
   when: ansible_host in groups['elastic']
+  vars:
+    tag: install
 
 - name: Template elasticsearch config
   template:
@@ -13,3 +15,5 @@
   notify:
     - Restart Elasticsearch
   when: ansible_host in groups['elastic']
+  vars:
+    tag: configure

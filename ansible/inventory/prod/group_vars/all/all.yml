@@ -1,5 +1,5 @@
 ansible_user: tech
-ansible_ssh_common_args: '-o ProxyCommand="ssh -W %h:%p -q tech@89.169.175.171"'
+ansible_ssh_common_args: '-o ProxyCommand="ssh -W %h:%p -q tech@89.169.163.10"'
 
 elk_major_version: 7
 elk_version: 7.15.1-amd64
