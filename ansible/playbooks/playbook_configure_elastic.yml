@@ -5,9 +5,3 @@
   roles:
   - role: roles/role_install_elastic
     when: tag == "configure"
-
-  - role: roles/role_install_kibana
-    when: tag == "configure"
-
-  - role: roles/role_install_filebit
-    when: tag == "configure"

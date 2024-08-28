@@ -11,9 +11,11 @@
     * [Резервное копирование](#Резервное-копирование)
     * [Дополнительно](#Дополнительно)
 * [Выполнение работы](#Выполнение-работы)
-* [Критерии сдачи](#Критерии-сдачи)
-* [Как правильно задавать вопросы дипломному руководителю](#Как-правильно-задавать-вопросы-дипломному-руководителю)
-
+    * [Terraform](#Terraform)
+    * [Ansible](#Ansibble)
+        * [WEB](#WEB)
+        * [ELK](#ELK)
+        * [Zabbix](#Zabbix)
 ---------
 
 ## Задача
@@ -74,37 +76,124 @@ Cоздайте ВМ, разверните на ней Elasticsearch. Устан
 ### Резервное копирование
 Создайте snapshot дисков всех ВМ. Ограничьте время жизни snaphot в неделю. Сами snaphot настройте на ежедневное копирование.
 
-### Дополнительно
-Не входит в минимальные требования.
-
-1. Для Zabbix можно реализовать разделение компонент - frontend, server, database. Frontend отдельной ВМ поместите в публичную подсеть, назначте публичный IP. Server поместите в приватную подсеть, настройте security group на разрешение трафика между frontend и server. Для Database используйте [Yandex Managed Service for PostgreSQL](https://cloud.yandex.com/en-ru/services/managed-postgresql). Разверните кластер из двух нод с автоматическим failover.
-2. Вместо конкретных ВМ, которые входят в target group, можно создать [Instance Group](https://cloud.yandex.com/en/docs/compute/concepts/instance-groups/), для которой настройте следующие правила автоматического горизонтального масштабирования: минимальное количество ВМ на зону — 1, максимальный размер группы — 3.
-3. В Elasticsearch добавьте мониторинг логов самого себя, Kibana, Zabbix, через filebeat. Можно использовать logstash тоже.
-4. Воспользуйтесь Yandex Certificate Manager, выпустите сертификат для сайта, если есть доменное имя. Перенастройте работу балансера на HTTPS, при этом нацелен он будет на HTTP веб-серверов.
-
 ## Выполнение работы
-На этом этапе вы непосредственно выполняете работу. При этом вы можете консультироваться с руководителем по поводу вопросов, требующих уточнения.
 
-⚠️ В случае недоступности ресурсов Elastic для скачивания рекомендуется разворачивать сервисы с помощью docker контейнеров, основанных на официальных образах.
+## Teraform
 
-**Важно**: Ещё можно задавать вопросы по поводу того, как реализовать ту или иную функциональность. И руководитель определяет, правильно вы её реализовали или нет. Любые вопросы, которые не освещены в этом документе, стоит уточнять у руководителя. Если его требования и указания расходятся с указанными в этом документе, то приоритетны требования и указания руководителя.
+Создаем ресурсы при помощи Terraform. При необходимости проверяем синтаксис.
 
-## Критерии сдачи
-1. Инфраструктура отвечает минимальным требованиям, описанным в [Задаче](#Задача).
-2. Предоставлен доступ ко всем ресурсам, у которых предполагается веб-страница (сайт, Kibana, Zabbix).
-3. Для ресурсов, к которым предоставить доступ проблематично, предоставлены скриншоты, команды, stdout, stderr, подтверждающие работу ресурса.
-4. Работа оформлена в отдельном репозитории в GitHub или в [Google Docs](https://docs.google.com/), разрешён доступ по ссылке.
-5. Код размещён в репозитории в GitHub.
-6. Работа оформлена так, чтобы были понятны ваши решения и компромиссы.
-7. Если использованы дополнительные репозитории, доступ к ним открыт.
+```bash
+$ terraform validate
+$ terraform plan
+$ terraform apply
+```
 
-## Как правильно задавать вопросы дипломному руководителю
-Что поможет решить большинство частых проблем:
-1. Попробовать найти ответ сначала самостоятельно в интернете или в материалах курса и только после этого спрашивать у дипломного руководителя. Навык поиска ответов пригодится вам в профессиональной деятельности.
-2. Если вопросов больше одного, присылайте их в виде нумерованного списка. Так дипломному руководителю будет проще отвечать на каждый из них.
-3. При необходимости прикрепите к вопросу скриншоты и стрелочкой покажите, где не получается. Программу для этого можно скачать [здесь](https://app.prntscr.com/ru/).
+Получаем Output:
 
-Что может стать источником проблем:
-1. Вопросы вида «Ничего не работает. Не запускается. Всё сломалось». Дипломный руководитель не сможет ответить на такой вопрос без дополнительных уточнений. Цените своё время и время других.
-2. Откладывание выполнения дипломной работы на последний момент.
-3. Ожидание моментального ответа на свой вопрос. Дипломные руководители — работающие инженеры, которые занимаются, кроме преподавания, своими проектами. Их время ограничено, поэтому постарайтесь задавать правильные вопросы, чтобы получать быстрые ответы :)
+![img](img/terraform_output.png)
+
+На основе этого подготавливаем Ansible инвентарь.
+
+```ini
+[web]
+dpl-s01web.ru-central1.internal
+dpl-s02web.ru-central1.internal
+
+[elastic]
+dpl-s01elk.ru-central1.internal
+
+[kibana]
+dpl-s02elk.ru-central1.internal
+
+[zabbix]
+dpl-s01zbx.ru-central1.internal
+
+[nginx:children]
+web
+zabbix
+```
+
+В group_vars/all.yml добавляем:
+
+```yaml
+ansible_user: tech
+ansible_ssh_common_args: '-o ProxyCommand="ssh -W %h:%p -q tech@89.169.175.192"'
+```
+
+Проверяем, что все настроено правильно.
+
+```bash
+ansible all -m ping -u tech -i ./inventory/prod/hosts --vault-password-file ~/vault.txt --private-key=~/.ssh/id_ed25519
+```
+![ansible_ping](img/ansible_ping.png)
+
+Переходим к наполнению виртуальных машин ПО при помощи Ansible.
+
+## Ansible
+
+Подготавливаем окружение(обновляем машины, устанавливаем Timezone)
+
+```shell
+ansible-playbook playbooks/playbook_prepare_environment.yml -u tech -i ./inventory/prod/hosts --vault-password-file ~/vault.txt --private-key=~/.ssh/id_ed25519
+```
+### WEB
+Устанавливаем nginx на web-сервера и сразу на инстанс, где будет установлен Zabbix. Добавляем на web-сервера страницы сайта.
+
+```bash
+ansible-playbook playbooks/playbook_install_nginx.yml -u tech -i ./inventory/prod/hosts --vault-password-file ~/vault.txt --private-key=~/.ssh/id_ed25519
+```
+
+проверяем доступность [сайта](http://51.250.47.157/)
+
+![site](img/site.png)
+
+### ELK
+
+Устанавливаем ELK-stack(Elasticsearch, Filebeat, Kibana)
+
+```bash
+ ansible-playbook playbooks/playbook_install_elastic.yml -u tech -i ./inventory/prod/hosts --vault-password-file ~/vault.txt --private-key=~/.ssh/id_ed25519
+ ```
+
+Конфигурируем ELK-stack
+
+```bash
+ansible-playbook playbooks/playbook_configure_elastic.yml -u tech -i ./inventory/prod/hosts --vault-password-file ~/vault.txt --private-key=~/.ssh/id_ed25519
+```
+
+заходим через Бастион на инстанс с elasticsearch и завершаем конфигурацию безопасности.
+
+```bash
+sudo /usr/share/elasticsearch/bin/elasticsearch-setup-passwords auto
+```
+
+![passwd](img/elastic_passwords.png)
+
+Добавляем пароли в переменные ансибла и конфигурируем Kibana и Filebeat
+
+```bash
+ansible-playbook playbooks/playbook_configure_kibana_and_filebeat.yml -u tech -i ./inventory/prod/hosts --vault-password-file ~/vault.txt --private-key=~/.ssh/id_ed25519
+```
+
+Проверяем работоспособность сервисов.
+
+
+![gui](img/kibana_gui.png)
+![logs](img/kibana_logs.png)
+
+### Zabbix
+
+Сначала определяемся со стеком на котором Zabbix будет работать. Вначале мы установили Nginx сразу и на сервер, где будет Zabbix. В качестве БД была выбрана PostgreSQL.
+
+Устанавливаем Postgres
+
+```bash
+ansible-playbook playbooks/playbook_install_postgresql.yml -u tech -i ./inventory/prod/hosts --vault-password-file ~/vault.txt --private-key=~/.ssh/id_ed25519
+```
+
+Уствнвливаем сам Zabbix
+
+```bash
+ansible-playbook playbooks/playbook_install_zabbix.yml -u tech -i ./inventory/prod/hosts --vault-password-file ~/vault.txt --private-key=~/.ssh/id_e
+d25519
+```

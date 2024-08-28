@@ -1,0 +1,10 @@
+---
+- name: Configure elk satck
+  hosts: all
+  become: true
+  roles:
+  - role: roles/role_install_kibana
+    when: tag == "configure"
+
+  - role: roles/role_install_filebit
+    when: tag == "configure"

@@ -5,3 +5,5 @@
     daemon-reload: true
     enabled: true
     state: restarted
+  vars:
+    tag: configure

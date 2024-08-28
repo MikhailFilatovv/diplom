@@ -8,3 +8,7 @@
     apt:
       upgrade: dist
       update_cache: true
+
+  - name: Set timezone to Europe/Moscow
+    timezone:
+      name: Europe/Moscow

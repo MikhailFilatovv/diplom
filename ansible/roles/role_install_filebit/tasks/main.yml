@@ -3,6 +3,8 @@
 - name: Install filebeat
   apt:
     deb: "https://mirror.yandex.ru/mirrors/elastic/{{ elk_major_version }}/pool/main/f/filebeat/filebeat-{{ elk_version }}.deb"
+  notify:
+    - Restart Elasticsearc
   when: ansible_host in groups['web']
   vars:
     tag: install
@@ -16,4 +18,4 @@
     - Restart Filebeat
   when: ansible_host in groups['web']
   vars:
-    tag: configure
+    tag: "configure"

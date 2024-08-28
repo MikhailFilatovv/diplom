@@ -2,6 +2,8 @@
 - name: Install kibana deb from a yandex mirror
   apt:
     deb: "https://mirror.yandex.ru/mirrors/elastic/{{ elk_major_version }}/pool/main/k/kibana/kibana-{{ elk_version }}.deb"
+  notify:
+    - Restart Kibana
   when: ansible_host in groups['kibana']
   vars:
     tag: install

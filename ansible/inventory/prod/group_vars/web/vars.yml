@@ -1,4 +1,0 @@
-nginx:
-  user:
-    name: www-data
-    group: www-data
