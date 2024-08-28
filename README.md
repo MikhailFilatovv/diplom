@@ -215,5 +215,5 @@ d25519
 ### Ссылки
 
 - [Сайт](http://51.250.47.157/)
-- [Kibana](http://89.169.172.39:5601/app/discover)
-- [Zabbix](http://89.169.165.165:8080/zabbix.php?action=dashboard.view)
+- [Kibana](http://89.169.168.65:5601/app/discover)
+- [Zabbix](http://89.169.167.67:8080/zabbix.php?action=dashboard.view)
