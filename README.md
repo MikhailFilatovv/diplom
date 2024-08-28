@@ -16,6 +16,7 @@
         * [WEB](#WEB)
         * [ELK](#ELK)
         * [Zabbix](#Zabbix)
+* [Ссылки](#Ссылки)
 ---------
 
 ## Задача
@@ -191,9 +192,28 @@ ansible-playbook playbooks/playbook_configure_kibana_and_filebeat.yml -u tech -i
 ansible-playbook playbooks/playbook_install_postgresql.yml -u tech -i ./inventory/prod/hosts --vault-password-file ~/vault.txt --private-key=~/.ssh/id_ed25519
 ```
 
-Уствнвливаем сам Zabbix
+Уствналиваем Zabbix
 
 ```bash
 ansible-playbook playbooks/playbook_install_zabbix.yml -u tech -i ./inventory/prod/hosts --vault-password-file ~/vault.txt --private-key=~/.ssh/id_e
 d25519
 ```
+
+Заходим в Zabbix, создаем пользователей.
+
+![users](img/zabbix_users.png)
+
+Добавляем хосты
+
+![hosts](img/zabbix_hosts.png)
+
+Создаем дашборды
+
+![dash](img/zabbix_web.png)
+![dash](img/zabbix_elk.png)
+
+### Ссылки
+
+- [Сайт](http://51.250.47.157/)
+- [Kibana](http://89.169.172.39:5601/app/discover)
+- [Zabbix](http://89.169.165.165:8080/zabbix.php?action=dashboard.view)
